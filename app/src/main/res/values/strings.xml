@@ -3,4 +3,7 @@
     <string name="app_label">My_App</string>
     <string name="search_hint">07/23</string>
     <string name="search">search me</string>
+
+    <string name="facebook_application_id" translatable="false">351139592155232</string>
+    <string name="facebook_login_protocol_scheme" translatable="false">fb351139592155232</string>
 </resources>

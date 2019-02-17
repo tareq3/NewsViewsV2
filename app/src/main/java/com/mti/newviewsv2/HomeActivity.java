@@ -130,7 +130,7 @@ FlowingDrawer mDrawer;
                     // Choose authentication providers
                     List<AuthUI.IdpConfig> providers = Arrays.asList(
                             new AuthUI.IdpConfig.EmailBuilder().build(),
-             //               new AuthUI.IdpConfig.FacebookBuilder().build(), //this is the only line needed for facebook sign in
+                           new AuthUI.IdpConfig.FacebookBuilder().build(), //this is the only line needed for facebook sign in
                             new AuthUI.IdpConfig.GoogleBuilder().build()
 
                     );
