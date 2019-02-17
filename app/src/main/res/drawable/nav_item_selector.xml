@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Created by Tareq Islam on 2/18/19 1:10 AM
+  ~
+  ~  Last modified 10/20/18 2:08 AM
+  -->
+
+<!--
+  ~ Created by Tareq Islam on 7/14/18 3:11 PM
+  ~
+  ~  Last modified 7/14/18 3:11 PM
+  -->
+
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_checked="true" android:color="#E91E63" />
+
+    <item  android:color="#FF424242"/>
+</selector>

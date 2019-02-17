@@ -4,16 +4,28 @@
   ~
   ~  Last modified 2/15/19 2:54 PM
   -->
-
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.mxn.soul.flowingdrawer_core.FlowingDrawer
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawerlayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    app:edPosition="1"
+    app:edMenuSize="240dp"
+    app:edMenuBackground="#00000000"
+    tools:context="com.mti.newviewsv2.HomeActivity"
+
+    >
+<android.support.design.widget.CoordinatorLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    tools:context="com.mti.newviewsv2.HomeActivity">
+    >
 
     <!--App bar layout can contain all the codes for: Toolbar/Actionbar/TitleBar/menuBar//and any other content that need for This bar-->
     <android.support.design.widget.AppBarLayout
@@ -35,7 +47,18 @@
                 android:layout_height="48dp"
                 android:background="@android:color/white"
                 android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-                app:popupTheme="@style/AppTheme.PopupOverlay" />
+                app:popupTheme="@style/AppTheme.PopupOverlay">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Home"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/black"
+                    android:textSize="20sp"
+                    android:layout_marginLeft="?android:attr/actionBarSize"
+                    android:layout_marginRight="?android:attr/actionBarSize"
+                    android:gravity="center"/>
+            </android.support.v7.widget.Toolbar>
 
 
 
@@ -49,3 +72,20 @@
 
 
 </android.support.design.widget.CoordinatorLayout>
+
+    <!--Drawer-->
+    <com.mxn.soul.flowingdrawer_core.FlowingMenuLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <FrameLayout
+            android:id="@+id/id_container_menu"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+        </FrameLayout>
+
+</com.mxn.soul.flowingdrawer_core.FlowingMenuLayout>
+
+    </com.mxn.soul.flowingdrawer_core.FlowingDrawer>

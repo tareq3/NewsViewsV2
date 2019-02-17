@@ -10,7 +10,7 @@
  *  Last modified 1/20/19 2:43 AM
  */
 
-package com.mti.newviewsv2.untility;
+package com.mti.newviewsv2.utility;
 
 import com.bumptech.glide.annotation.GlideModule;
 import com.bumptech.glide.module.AppGlideModule;

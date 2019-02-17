@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.util.Linkify;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,8 +33,14 @@ public class NumberActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_number);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        android.support.v7.widget.Toolbar toolbar = findViewById(R.id.toolbar_number);
+        setSupportActionBar(toolbar);
+
+        // toolbar fancy stuff
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+       getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         numberResult=findViewById(R.id.number_result);
 
@@ -129,6 +136,12 @@ public class NumberActivity extends AppCompatActivity {
         @Override
         protected void onProgressUpdate(Void... values) {
         }
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
     }
 }
 

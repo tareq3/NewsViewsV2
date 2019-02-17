@@ -4,7 +4,7 @@
  *  Last modified 2/16/19 11:53 PM
  */
 
-package com.mti.newviewsv2.untility;
+package com.mti.newviewsv2.utility;
 
 import android.content.Context;
 import android.os.Build;

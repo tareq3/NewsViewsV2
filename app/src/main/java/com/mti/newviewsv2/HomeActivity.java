@@ -9,13 +9,15 @@ package com.mti.newviewsv2;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SearchRecentSuggestionsProvider;
 import android.database.Cursor;
 import android.provider.SearchRecentSuggestions;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -23,13 +25,15 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import com.mti.newviewsv2.untility.ConnectivityHelper;
-import com.mti.newviewsv2.untility.MySuggestionProvider;
+import com.mti.newviewsv2.utility.ConnectivityHelper;
+import com.mti.newviewsv2.utility.MySuggestionProvider;
+import com.mxn.soul.flowingdrawer_core.ElasticDrawer;
+import com.mxn.soul.flowingdrawer_core.FlowingDrawer;
 
-public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener,HomeActivityRecyclerFragment1.OnDataSetChangedListener,HomeActivityRecyclerFragment2.OnDataSetChangedListener {
+public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener,HomeActivityRecyclerFragment1.OnDataSetChangedListener,HomeActivityRecyclerFragment2.OnDataSetChangedListener, HomeNavDrawerFragment.OnNavDrawerItemClickListener {
 
     public static SwipeRefreshLayout mSwipeRefreshLayout;
-
+FlowingDrawer mDrawer;
 
   Context mContext;
     @Override
@@ -38,12 +42,12 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
         setContentView(R.layout.home_app_bar);
 
         mContext=this;
-        android.support.v7.widget.Toolbar toolbar = findViewById(R.id.toolbar);
+      /*  android.support.v7.widget.Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+*/
         // toolbar fancy stuff
-        ;
-        getSupportActionBar().setTitle(R.string.app_name);
+
+
 
 // Hide status bar
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -76,8 +80,67 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         initRecyclerViewFragment(savedInstanceState);
 
+        initNavigationDrawer();
+    }
+
+    private void initNavigationDrawer(){
+        mDrawer=findViewById(R.id.drawerlayout);
+        mDrawer.setTouchMode(ElasticDrawer.TOUCH_MODE_BEZEL);
+
+        setupToolbar();
+        setNavigationDrawer();
+    }
+
+
+    protected void setupToolbar() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+       // getSupportActionBar().setTitle(R.string.app_name);
+        //Setting up navigation drawer taggle button
+        toolbar.setNavigationIcon(R.drawable.ic_menu_black);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //  Toast.makeText(MainActivity.this, "clicked", Toast.LENGTH_SHORT).show();
+                mDrawer.toggleMenu();
+            }
+        });
+
+        mDrawer.setOnDrawerStateChangeListener(new ElasticDrawer.OnDrawerStateChangeListener() {
+            @Override
+            public void onDrawerStateChange(int oldState, int newState) {
+                if (newState == ElasticDrawer.STATE_OPEN) {
+                    Log.i("MainActivity", "Drawer STATE_CLOSED");
+
+                  //  mINavigationDrawerUpdate.onNavDrawerOpen();
+                }
+            }
+
+            @Override
+            public void onDrawerSlide(float openRatio, int offsetPixels) {
+                Log.i("MainActivity", "openRatio=" + openRatio + " ,offsetPixels=" + offsetPixels);
+            }
+        });
 
     }
+
+    HomeNavDrawerFragment mMenuFragment;
+    private void setNavigationDrawer() {
+
+        FragmentManager fm = getSupportFragmentManager();
+         mMenuFragment = (HomeNavDrawerFragment) fm.findFragmentById(R.id.id_container_menu);
+        if (mMenuFragment == null) {
+            mMenuFragment = HomeNavDrawerFragment.newInstance();
+            fm.beginTransaction().add(R.id.id_container_menu, mMenuFragment,"NavigationDrawerFragment").commit();
+        }
+
+
+
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -138,6 +201,7 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                       intent.putExtra("SEARCH_TYPE", "number");
                     startActivity(intent);
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                     return true;
                 case "date":
                     /*Do date api call*/
@@ -147,6 +211,8 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                     intent.putExtra("SEARCH_TYPE", "date");
                     startActivity(intent);
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+
                     return true;
                 case "not-allowed":
                     /*do nothing*/
@@ -240,4 +306,33 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         if(load1 && load2) mSwipeRefreshLayout.setRefreshing(false);
     }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        mMenuFragment.vNavigation.setCheckedItem(R.id.nav_drawer_home);
+
+    }
+
+    @Override
+    public void onNavItemClick(MenuItem menuItem) {
+        /*Do menu item click actions*/
+
+        switch (menuItem.getItemId()){
+            case R.id.nav_drawer_home:
+                break;
+            case  R.id.nav_drawer_about:
+
+                startActivity(new Intent(this, AboutActivity.class));
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                break;
+            case R.id.nav_drawer_exit:
+                this.finish();
+                System.exit(0);
+                break;
+        }
+    }
+
 }

@@ -26,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <com.mti.newviewsv2.untility.SquareFrameLayout
+            <com.mti.newviewsv2.utility.SquareFrameLayout
                 android:id="@+id/squareFrameLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -41,7 +41,7 @@
                     android:adjustViewBounds="true"
                     android:scaleType="centerCrop"
                     tools:srcCompat="@tools:sample/avatars" />
-            </com.mti.newviewsv2.untility.SquareFrameLayout>
+            </com.mti.newviewsv2.utility.SquareFrameLayout>
 
             <TextView
                 android:id="@+id/textview_title"
@@ -118,6 +118,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:popupTheme="@style/AppTheme.PopupOverlay" />
+        app:popupTheme="@style/AppTheme.PopupOverlay" >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Card Details"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+
+            android:layout_marginRight="?android:attr/actionBarSize"
+            android:gravity="center"/>
+    </android.support.v7.widget.Toolbar>
 
 </android.support.constraint.ConstraintLayout>

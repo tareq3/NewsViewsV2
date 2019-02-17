@@ -162,7 +162,7 @@ public class HomeActivityRecyclerFragment1 extends Fragment implements ApiContro
 
     @Override
     public void onClick(View view, int position, boolean isLongClick) {
-        Toast.makeText(mContext, ""+ techArticleList.get(position).getUrlToImage(), Toast.LENGTH_SHORT).show();
+     //   Toast.makeText(mContext, ""+ techArticleList.get(position).getUrlToImage(), Toast.LENGTH_SHORT).show();
 
         // Construct an Intent as normal
         Intent intent = new Intent(mContext, DetailActivity.class);

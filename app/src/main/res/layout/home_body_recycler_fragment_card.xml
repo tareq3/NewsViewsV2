@@ -18,7 +18,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-        <com.mti.newviewsv2.untility.SquareFrameLayout
+        <com.mti.newviewsv2.utility.SquareFrameLayout
             android:id="@+id/image_holder"
             android:layout_width="wrap_content"
             android:layout_height="200dp"
@@ -35,7 +35,7 @@
                 android:scaleType="centerCrop"
                 tools:srcCompat="@tools:sample/avatars" />
 
-        </com.mti.newviewsv2.untility.SquareFrameLayout>
+        </com.mti.newviewsv2.utility.SquareFrameLayout>
 
 
         <TextView

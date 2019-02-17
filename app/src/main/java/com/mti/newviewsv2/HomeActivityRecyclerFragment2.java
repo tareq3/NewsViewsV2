@@ -13,10 +13,14 @@
 package com.mti.newviewsv2;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.util.Pair;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -43,7 +47,7 @@ import retrofit2.Response;
 /***
  * Created by mtita on 15,February,2019.
  */
-public class HomeActivityRecyclerFragment2 extends Fragment implements ApiController.OnBusinessDataLoadCompleteListener {
+public class HomeActivityRecyclerFragment2 extends Fragment implements ApiController.OnBusinessDataLoadCompleteListener, ListItemAdapterTech.ItemClickListener {
     RecyclerView mRecyclerView;
 
 
@@ -118,7 +122,7 @@ public class HomeActivityRecyclerFragment2 extends Fragment implements ApiContro
         });
 
 
-        listItemAdapter = new ListItemAdapterTech(mContext, businessArticleList, null); //if we don't need to use listener can use null instead of this
+        listItemAdapter = new ListItemAdapterTech(mContext, businessArticleList, this); //if we don't need to use listener can use null instead of this
 
         mRecyclerView.setAdapter(listItemAdapter);
 
@@ -152,6 +156,38 @@ public class HomeActivityRecyclerFragment2 extends Fragment implements ApiContro
         listItemAdapter.notifyDataSetChanged();
 
         mOnDataSetChangedListener.onDataUpdate2(true);
+    }
+
+    @Override
+    public void onClick(View view, int position, boolean isLongClick) {
+       // Toast.makeText(mContext, ""+ businessArticleList.get(position).getUrlToImage(), Toast.LENGTH_SHORT).show();
+
+        // Construct an Intent as normal
+        Intent intent = new Intent(mContext, DetailActivity.class);
+        intent.putExtra("IMAGE_URL", businessArticleList.get(position).getUrlToImage());
+        intent.putExtra("TITLE",businessArticleList.get(position).getTitle());
+        intent.putExtra("DETAIL",businessArticleList.get(position).getContent());
+        intent.putExtra("AUTHOR",businessArticleList.get(position).getAuthor());
+        intent.putExtra("SRC",businessArticleList.get(position).getSource().getName());
+        intent.putExtra("DATE",businessArticleList.get(position).getPublishedAt());
+        intent.putExtra("URL",businessArticleList.get(position).getUrl());
+
+        // BEGIN_INCLUDE(start_activity)
+
+        ActivityOptionsCompat activityOptions =  ActivityOptionsCompat.makeSceneTransitionAnimation(
+                getActivity(),
+
+                // Now we provide a list of Pair items which contain the view we can transitioning
+                // from, and the name of the view it is transitioning to, in the launched activity
+                new Pair<View, String>(view.findViewById(R.id.cardImg), DetailActivity.VIEW_NAME_HEADER_IMAGE
+                ),
+
+                new Pair<View, String>(view.findViewById(R.id.card_title), DetailActivity.VIEW_NAME_HEADER_TITLE
+                )
+        );
+// Now we can start the Activity, providing the activity options as a bundle
+        ActivityCompat.startActivity(mContext, intent, activityOptions.toBundle());
+        // END_INCLUDE(start_activity)
     }
 
 

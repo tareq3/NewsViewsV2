@@ -10,7 +10,7 @@
  *  Last modified 2/15/19 8:03 PM
  */
 
-package com.mti.newviewsv2.untility;
+package com.mti.newviewsv2.utility;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

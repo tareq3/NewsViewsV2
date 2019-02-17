@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.mti.newviewsv2.untility.GlideApp;
+import com.mti.newviewsv2.utility.GlideApp;
 import com.mti.newviewsv2.R;
 import com.mti.newviewsv2.model.Article;
 

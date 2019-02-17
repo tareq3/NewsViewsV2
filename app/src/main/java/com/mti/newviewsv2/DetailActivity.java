@@ -20,14 +20,11 @@ import android.os.Bundle;
 import android.transition.Transition;
 import android.view.MenuItem;
 import android.view.WindowManager;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.mti.newviewsv2.untility.GlideApp;
-
-import retrofit2.http.Url;
+import com.mti.newviewsv2.utility.GlideApp;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -56,7 +53,7 @@ public class DetailActivity extends AppCompatActivity {
 
         // toolbar fancy stuff
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Card Details");
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
 
         mHeaderImageView =  findViewById(R.id.imageview_header);
@@ -68,7 +65,7 @@ public class DetailActivity extends AppCompatActivity {
 
 
 
-        Toast.makeText(this, ""+ getIntent().getStringExtra("TITLE"), Toast.LENGTH_SHORT).show();
+      //  Toast.makeText(this, ""+ getIntent().getStringExtra("TITLE"), Toast.LENGTH_SHORT).show();
 
         // BEGIN_INCLUDE(detail_set_view_name)
         /**

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Created by Tareq Islam on 2/18/19 12:14 AM
+  ~
+  ~  Last modified 2/18/19 12:14 AM
+  -->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_drawer_home"
+            android:icon="@drawable/ic_home_black_24dp"
+            android:title="Home"
+            android:checkable="true"
+            android:checked="true"/>
+        <item
+            android:id="@+id/nav_drawer_about"
+
+            android:title="About"
+            android:icon="@drawable/ic_help_outline_black_24dp"
+
+            android:checkable="true"
+            android:checked="false"/>
+        <item
+            android:id="@+id/nav_drawer_exit"
+
+            android:icon="@drawable/ic_exit_to_app_black_24dp"
+            android:title="Exit"
+            android:checkable="true"
+            android:checked="false"/>
+        />
+
+
+    </group>
+</menu>

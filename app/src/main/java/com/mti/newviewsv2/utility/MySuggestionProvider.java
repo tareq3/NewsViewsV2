@@ -10,7 +10,7 @@
  *  Last modified 2/16/19 12:47 AM
  */
 
-package com.mti.newviewsv2.untility;
+package com.mti.newviewsv2.utility;
 
 import android.content.SearchRecentSuggestionsProvider;
 
