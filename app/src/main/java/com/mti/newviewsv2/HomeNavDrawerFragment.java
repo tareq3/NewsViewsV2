@@ -7,7 +7,9 @@
 package com.mti.newviewsv2;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -21,7 +23,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.mti.newviewsv2.utility.GlideApp;
+import com.mti.newviewsv2.utility.HAWK_KEYS;
 
 /***
  * Created by mtita on 18,February,2019.
@@ -49,6 +55,9 @@ public class HomeNavDrawerFragment extends Fragment implements NavigationView.On
             throw new RuntimeException(context.toString()
                     + " must implement OnNavDrawerItemClickListener");
         }
+
+
+
     }
 
     @Nullable
@@ -82,7 +91,7 @@ public class HomeNavDrawerFragment extends Fragment implements NavigationView.On
             @Override
             public void onClick(View v) {
 
-               /* AuthUI.getInstance()
+                AuthUI.getInstance()
                         .signOut(v.getContext())
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             public void onComplete(@NonNull Task<Void> task) {
@@ -90,24 +99,26 @@ public class HomeNavDrawerFragment extends Fragment implements NavigationView.On
 
                                 Toast.makeText(headerView.getContext(), "you are successfully Log out", Toast.LENGTH_SHORT).show();
                             }
-                        });*/
+                        });
             }
         });
 
     }
 
-    private   void updateProfile() {
+    public    void updateProfile() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+
         //setting profile name
-      /*  ((TextView) headerView.findViewById(R.id.user_name_TextView)).setText(Hawk.get(HAWK_KEYS.USER_KEYS.user_name.toString(), "No name"));
+        ((TextView) headerView.findViewById(R.id.user_name_TextView)).setText(prefs.getString(HAWK_KEYS.USER_KEYS.user_name.toString(), "No name"));
 
 
         //setting profile pic from HAwk
         GlideApp.with(headerView.getContext())
-                .load( Hawk.get(HAWK_KEYS.USER_KEYS.user_photo_url.toString(),""))
+                .load( prefs.getString(HAWK_KEYS.USER_KEYS.user_photo_url.toString(),""))
                 .placeholder(R.drawable.ic_profile_pic)
                 .circleCrop()
                 .into((ImageView)headerView.findViewById(R.id.profilePic));
-*/
+
 
 
 
@@ -128,6 +139,8 @@ public class HomeNavDrawerFragment extends Fragment implements NavigationView.On
 
         return false;
     }
+
+
 
     public interface OnNavDrawerItemClickListener{
         public void onNavItemClick(MenuItem menuItem);

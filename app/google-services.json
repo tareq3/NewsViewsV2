@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "45675551044",
+    "firebase_url": "https://rokomari-6a6fc.firebaseio.com",
+    "project_id": "rokomari-6a6fc",
+    "storage_bucket": "rokomari-6a6fc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:45675551044:android:9f59acf3c5e5ff5f",
+        "android_client_info": {
+          "package_name": "com.mti.newviewsv2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "45675551044-2i8c4oo27sh2mrgsml8c6cg4324tqa6o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mti.newviewsv2",
+            "certificate_hash": "8378d41ffd70b5dad938b2582a26f5573cbb8747"
+          }
+        },
+        {
+          "client_id": "45675551044-0so6on8boqak3p93iusnmmfqdgac5d5u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDYbKAOqdQgZyZdE9UR3FTpT3z6GKN-Ga4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "45675551044-0so6on8boqak3p93iusnmmfqdgac5d5u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
