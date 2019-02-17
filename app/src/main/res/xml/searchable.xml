@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Created by Tareq Islam on 2/16/19 4:07 PM
+  ~
+  ~  Last modified 2/16/19 12:45 AM
+  -->
+
+<!--
+  ~ Created by Tareq Islam on 2/16/19 12:44 AM
+  ~
+  ~  Last modified 2/16/19 12:44 AM
+  -->
+
+<searchable xmlns:android="http://schemas.android.com/apk/res/android"
+    android:label="@string/app_label"
+    android:hint="@string/search_hint"
+    android:searchSuggestAuthority="com.mti.MySuggestionProvider"
+    android:searchSuggestSelection=" ?" >
+</searchable>
