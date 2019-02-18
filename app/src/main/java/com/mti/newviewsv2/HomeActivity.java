@@ -93,9 +93,10 @@ FlowingDrawer mDrawer;
                 R.color.swipe_color_1, R.color.swipe_color_2,
                 R.color.swipe_color_3, R.color.swipe_color_4);
         // END_INCLUDE (change_colors)
+
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
-
+        mSwipeRefreshLayout.setRefreshing(true);
 
 
         initRecyclerViewFragment(savedInstanceState);
@@ -141,8 +142,8 @@ FlowingDrawer mDrawer;
                                     .createSignInIntentBuilder()
                                     .setIsSmartLockEnabled(false) //setting this true adds a lot complexity
                                     .setAvailableProviders(providers)
-                                    .setLogo(R.mipmap.ic_launcher) //for setting our logo, Optional
-                                    .setTheme(R.style.FireBaseGreenTheme) //optional
+                                    .setLogo(R.drawable.ic_bell) //for setting our logo, Optional
+                                    .setTheme(R.style.AppThemeFirebaseAuth) //optional
                                     .build(),
                             RC_SIGN_IN);
                 }

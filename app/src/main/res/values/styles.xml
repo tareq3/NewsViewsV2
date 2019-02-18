@@ -27,15 +27,38 @@
 
 
     //following theme for firebaseUI customization
-    <style name="FireBaseGreenTheme" parent="FirebaseUI">
-        <!-- Required for sign-in flow styling -->
-        <item name="colorPrimary">#FF1744</item>
-        <item name="colorPrimaryDark">#000000</item>
-        <item name="colorAccent">@color/colorAccent</item>
 
-        <item name="colorControlNormal">@color/colorPrimary</item>
-        <item name="colorControlActivated">@color/colorAccent</item>
-        <item name="colorControlHighlight">@color/material_green_a200</item>
-        <item name="android:windowBackground">@color/material_green_50</item>
+    <style name="AppThemeFirebaseAuth" parent="AppTheme.NoActionBar">
+        <item name="android:actionBarStyle">@style/FirebaseAuthActionBarStyle</item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
+
+    <style name="FirebaseAuthActionBarStyle" parent="Widget.AppCompat.ActionBar">
+        <item name="android:background">@android:color/white</item>
+    </style>
+
+
+
+    <!-- App Splash application theme. -->
+    <style name="AppTheme.Splash" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:windowFullscreen">true</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <!-- This theme used in both activity Launcher and Launcher_Extender as well.-->
+    <style name="Launcher" parent="Theme.AppCompat.Light.NoActionBar">
+
+
+
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowBackground">@drawable/launcher_background</item>
+        <item name="colorPrimaryDark">@android:color/transparent</item>
+    </style>
+
+
 </resources>

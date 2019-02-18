@@ -75,6 +75,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/card_title" />
 
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/card_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/card_author"
+            app:srcCompat="@drawable/moss_gradient" />
+
         <TextView
             android:id="@+id/card_author"
             android:layout_width="wrap_content"
@@ -87,6 +98,9 @@
             android:shadowDy="1"
             android:shadowRadius="2"
             android:text="TextView"
+            android:maxLines="1"
+            android:maxLength="7"
+            android:ellipsize="end"
             android:textColor="@color/light_font"
             app:layout_constraintBottom_toBottomOf="@+id/image_holder"
             app:layout_constraintStart_toStartOf="parent"
@@ -113,15 +127,15 @@
             android:id="@+id/card_src"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="4dp"
+            android:background="@drawable/moss_gradient2"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
             android:shadowColor="@color/text_shadow"
             android:shadowDx="1"
             android:shadowDy="1"
             android:shadowRadius="2"
             android:text="CNN"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+
             android:textColor="@color/light_font"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"

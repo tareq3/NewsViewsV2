@@ -22,6 +22,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:text="Top Headlines Technology"
+        android:textColor="#616161"
         app:layout_constraintBottom_toTopOf="@+id/first_recyclerview"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

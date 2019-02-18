@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Created by Tareq Islam on 2/18/19 4:58 PM
+  ~
+  ~  Last modified 2/18/19 4:32 PM
+  -->
+
+<!--
+  ~ Created by Tareq Islam on 7/25/18 4:35 PM
+  ~
+  ~  Last modified 7/25/18 4:35 PM
+  -->
+
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+       android:layout_height="match_parent"
+    android:background="@color/launcher_background_color">
+
+   <ImageView
+       android:id="@+id/launcher_icon_view"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:contentDescription="Just showing the icon"
+       app:layout_constraintBottom_toBottomOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toTopOf="parent"
+       app:srcCompat="@drawable/ic_bell"
+       tools:ignore="VectorDrawableCompat" />
+</android.support.constraint.ConstraintLayout>

@@ -109,7 +109,10 @@ public class HomeNavDrawerFragment extends Fragment implements NavigationView.On
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
 
         //setting profile name
-        ((TextView) headerView.findViewById(R.id.user_name_TextView)).setText(prefs.getString(HAWK_KEYS.USER_KEYS.user_name.toString(), "No name"));
+        ((TextView) headerView.findViewById(R.id.user_name_TextView)).setText(
+                prefs.getString(HAWK_KEYS.USER_KEYS.user_name.toString(), "No name") + " \n" +
+                        prefs.getString(HAWK_KEYS.USER_KEYS.user_email.toString(), "No name")
+        );
 
 
         //setting profile pic from HAwk

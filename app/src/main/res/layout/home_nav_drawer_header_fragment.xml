@@ -14,7 +14,7 @@
     android:gravity="bottom"
     android:orientation="vertical"
 
-    android:background="#1A000000"
+    android:background="@drawable/moss_gradient"
 
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 

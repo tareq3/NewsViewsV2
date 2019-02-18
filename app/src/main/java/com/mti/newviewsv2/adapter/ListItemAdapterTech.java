@@ -115,6 +115,7 @@ public class ListItemAdapterTech extends RecyclerView.Adapter<ListItemAdapterTec
 */
        GlideApp.with(holder.cardImage.getContext())
                .load( ( (List<Article>) dataList).get(position).getUrlToImage())
+              
                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                .into(holder.cardImage);
 

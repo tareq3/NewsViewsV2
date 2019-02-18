@@ -155,7 +155,7 @@ public class HomeActivityRecyclerFragment1 extends Fragment implements ApiContro
 
         listItemAdapter.notifyDataSetChanged();
 
-        mOnDataSetChangedListener.onDataUpdate(true);
+     if(mOnDataSetChangedListener!=null)   mOnDataSetChangedListener.onDataUpdate(true);
         //Notify Data updated on Activity
        // mOnDataSetChangedListener.onDataUpdate(true);
     }

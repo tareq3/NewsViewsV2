@@ -9,8 +9,10 @@ package com.mti.newviewsv2;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 public class MyWebActivity extends AppCompatActivity {
 
@@ -31,7 +33,18 @@ public class MyWebActivity extends AppCompatActivity {
 
 
         WebView myWebView = (WebView) findViewById(R.id.webview);
+
         myWebView.loadUrl(getIntent().getStringExtra("URL"));
+
+
+
+        myWebView.setWebViewClient(new WebViewClient(){
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                ( (View) findViewById(R.id.loading_view)).setVisibility(View.GONE);
+                super.onPageFinished(view, url);
+            }
+        });
     }
 
     public boolean onOptionsItemSelected(MenuItem item){

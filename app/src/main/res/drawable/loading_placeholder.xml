@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Created by Tareq Islam on 2/18/19 9:25 PM
+  ~
+  ~  Last modified 2/18/19 9:25 PM
+  -->
+
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:gravity="center">
+        <animated-rotate xmlns:android="http://schemas.android.com/apk/res/android"
+            android:drawable="@drawable/ic_loading"
+            android:pivotX="50%"
+            android:pivotY="50%" />
+    </item>
+</layer-list>
