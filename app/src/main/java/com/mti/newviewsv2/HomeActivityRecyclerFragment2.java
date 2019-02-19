@@ -21,6 +21,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.Pair;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -28,8 +29,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.mti.newviewsv2.adapter.ListItemAdapterTech;
+import com.mti.newviewsv2.adapter.ListItemAdapterTechSmall;
 import com.mti.newviewsv2.api.ApiClient;
 import com.mti.newviewsv2.api.ApiServices;
 import com.mti.newviewsv2.controller.ApiController;
@@ -47,11 +50,15 @@ import retrofit2.Response;
 /***
  * Created by mtita on 15,February,2019.
  */
-public class HomeActivityRecyclerFragment2 extends Fragment implements ApiController.OnBusinessDataLoadCompleteListener, ListItemAdapterTech.ItemClickListener {
+public class HomeActivityRecyclerFragment2 extends Fragment implements ApiController.OnBusinessDataLoadCompleteListener, ListItemAdapterTech.ItemClickListener, ListItemAdapterTechSmall.ItemClickListener {
+    boolean gridSwitch=false;
+    ToggleButton mToggleGridButton;
+
     RecyclerView mRecyclerView;
 
 
     ListItemAdapterTech listItemAdapter;
+    ListItemAdapterTechSmall mListItemAdapterTechSmall;
 
     List<Article> businessArticleList = new ArrayList<>();
     Context mContext;
@@ -104,8 +111,11 @@ public class HomeActivityRecyclerFragment2 extends Fragment implements ApiContro
         mRecyclerView = getView().findViewById(R.id.second_recyclerview);
 
         mRecyclerView.setHasFixedSize(true);
-        final RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getView().getContext(), LinearLayoutManager.HORIZONTAL, false);
-        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        final RecyclerView.LayoutManager mLayoutManagerLinear = new LinearLayoutManager(getView().getContext(), LinearLayoutManager.HORIZONTAL, false);
+        final RecyclerView.LayoutManager mLayoutManagerGrid = new GridLayoutManager(getView().getContext(), 2, GridLayoutManager.HORIZONTAL, false);
+        mRecyclerView.setLayoutManager(gridSwitch? mLayoutManagerGrid : mLayoutManagerLinear);
+
 
         /*for fixing scroll issue*/
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -123,8 +133,24 @@ public class HomeActivityRecyclerFragment2 extends Fragment implements ApiContro
 
 
         listItemAdapter = new ListItemAdapterTech(mContext, businessArticleList, this); //if we don't need to use listener can use null instead of this
+        mListItemAdapterTechSmall= new ListItemAdapterTechSmall(mContext, businessArticleList, this);
 
-        mRecyclerView.setAdapter(listItemAdapter);
+        /*For toogle button*/
+        mToggleGridButton=getView().findViewById(R.id.toggleButton);
+        mToggleGridButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gridSwitch=!gridSwitch;
+                /*First change the layout*/
+                mRecyclerView.setLayoutManager(gridSwitch? mLayoutManagerGrid : mLayoutManagerLinear);
+                /*As we change the card we need to update the adapter*/
+                mRecyclerView.setAdapter(gridSwitch? mListItemAdapterTechSmall : listItemAdapter);
+
+                fillAdapter(); /*Update adpater and notify changes*/
+            }
+        });
+        mRecyclerView.setAdapter(gridSwitch? mListItemAdapterTechSmall : listItemAdapter);
+
 
         loadData();
     }
@@ -144,16 +170,23 @@ public class HomeActivityRecyclerFragment2 extends Fragment implements ApiContro
         mOnDataSetChangedListener = null;
     }
 
+    void fillAdapter(){
+        if(!gridSwitch) {
+            listItemAdapter.updateAdapter((ArrayList<Article>) businessArticleList);
+            listItemAdapter.notifyDataSetChanged();
+        }else {
+            mListItemAdapterTechSmall.updateAdapter((ArrayList<Article>) businessArticleList);
+            mListItemAdapterTechSmall.notifyDataSetChanged();
+        }
+    }
+
     @Override
     public void onBusinessDataLoadCompleted(List<Article> businessArticleList) {
 
        // Toast.makeText(mContext, "business"+businessArticleList.size(), Toast.LENGTH_SHORT).show();
 
         this.businessArticleList=businessArticleList;
-        listItemAdapter.updateAdapter((ArrayList<Article>) businessArticleList);
-
-
-        listItemAdapter.notifyDataSetChanged();
+       fillAdapter();
 
         mOnDataSetChangedListener.onDataUpdate2(true);
     }

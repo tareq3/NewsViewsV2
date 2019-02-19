@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Created by Tareq Islam on 2/19/19 9:29 PM
+  ~
+  ~  Last modified 2/19/19 9:29 PM
+  -->
+
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:state_checked="false"
+        android:drawable="@drawable/ic_format_list_bulleted_black_24dp" />
+
+    <item android:state_checked="true"
+        android:drawable="@drawable/ic_grid_on_black_24dp" />
+
+</selector>
