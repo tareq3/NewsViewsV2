@@ -13,9 +13,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
-import android.support.v4.view.ViewCompat;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.RequiresApi;
+import androidx.core.view.ViewCompat;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.transition.Transition;
 import android.view.MenuItem;
@@ -24,7 +24,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.mti.newviewsv2.utility.GlideApp;
+import com.bumptech.glide.Glide;
+
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -48,7 +49,7 @@ public class DetailActivity extends AppCompatActivity {
         // Hide status bar
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        android.support.v7.widget.Toolbar toolbar = findViewById(R.id.toolbar_detail);
+        androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar_detail);
         setSupportActionBar(toolbar);
 
         // toolbar fancy stuff
@@ -146,7 +147,7 @@ public class DetailActivity extends AppCompatActivity {
      * Load the item's thumbnail image into our {@link ImageView}.
      */
     private void loadThumbnail() {
-        GlideApp.with(mHeaderImageView.getContext())
+        Glide.with(mHeaderImageView.getContext())
                 .load(getIntent().getStringExtra("IMAGE_URL"))
                 .placeholder(mHeaderImageView.getDrawable())
                 .into(mHeaderImageView);
@@ -156,7 +157,7 @@ public class DetailActivity extends AppCompatActivity {
      * Load the item's full-size image into our {@link ImageView}.
      */
     private void loadFullSizeImage() {
-        GlideApp.with(mHeaderImageView.getContext())
+        Glide.with(mHeaderImageView.getContext())
                 .load(getIntent().getStringExtra("IMAGE_URL") )
                 .placeholder(mHeaderImageView.getDrawable())
                 .into(mHeaderImageView);

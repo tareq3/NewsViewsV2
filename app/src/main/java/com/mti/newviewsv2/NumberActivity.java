@@ -7,16 +7,13 @@
 package com.mti.newviewsv2;
 
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.util.Linkify;
 import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -35,7 +32,7 @@ public class NumberActivity extends AppCompatActivity {
         setContentView(R.layout.activity_number);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        android.support.v7.widget.Toolbar toolbar = findViewById(R.id.toolbar_number);
+        androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar_number);
         setSupportActionBar(toolbar);
 
         // toolbar fancy stuff

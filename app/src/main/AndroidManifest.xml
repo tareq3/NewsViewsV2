@@ -17,23 +17,24 @@
         <activity
             android:name=".Launcher_Splash.LauncherActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Launcher"></activity>
+            android:theme="@style/Launcher"/>
         <activity
             android:name=".Launcher_Splash.Launcher_Extender"
             android:screenOrientation="portrait"
             android:theme="@style/Launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW"/>
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".Launcher_Splash.SplashActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait"/>
 
         <activity android:name=".Launcher_Splash.SpalashActivity2"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait"/>
 
 
         <activity

@@ -19,7 +19,7 @@
     tools:context="com.mti.newviewsv2.HomeActivity"
 
     >
-<android.support.design.widget.CoordinatorLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
@@ -28,7 +28,7 @@
     >
 
     <!--App bar layout can contain all the codes for: Toolbar/Actionbar/TitleBar/menuBar//and any other content that need for This bar-->
-    <android.support.design.widget.AppBarLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
 
 
 
-            <android.support.v7.widget.Toolbar
+            <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
 
@@ -58,11 +58,11 @@
                     android:layout_marginLeft="?android:attr/actionBarSize"
                     android:layout_marginRight="?android:attr/actionBarSize"
                     android:gravity="center"/>
-            </android.support.v7.widget.Toolbar>
+            </androidx.appcompat.widget.Toolbar>
 
 
 
-    </android.support.design.widget.AppBarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
 
     <include
         layout="@layout/home_body"
@@ -71,7 +71,7 @@
         android:layout_height="match_parent" />
 
 
-</android.support.design.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <!--Drawer-->
     <com.mxn.soul.flowingdrawer_core.FlowingMenuLayout

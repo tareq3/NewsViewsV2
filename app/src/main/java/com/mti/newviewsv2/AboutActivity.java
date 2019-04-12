@@ -8,7 +8,7 @@ package com.mti.newviewsv2;
 
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.WindowManager;
@@ -25,7 +25,7 @@ public class AboutActivity extends AppCompatActivity {
         // Hide status bar
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        android.support.v7.widget.Toolbar toolbar = findViewById(R.id.toolbar_about);
+        androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar_about);
         setSupportActionBar(toolbar);
 
         // toolbar fancy stuff

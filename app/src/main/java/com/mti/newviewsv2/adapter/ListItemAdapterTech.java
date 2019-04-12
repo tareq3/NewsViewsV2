@@ -7,8 +7,8 @@
 package com.mti.newviewsv2.adapter;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,8 +17,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
+import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.mti.newviewsv2.utility.GlideApp;
+
 import com.mti.newviewsv2.R;
 import com.mti.newviewsv2.model.Article;
 
@@ -113,9 +114,9 @@ public class ListItemAdapterTech extends RecyclerView.Adapter<ListItemAdapterTec
                 .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                 .into(holder.image_row);
 */
-       GlideApp.with(holder.cardImage.getContext())
+       Glide.with(holder.cardImage.getContext())
                .load( ( (List<Article>) dataList).get(position).getUrlToImage())
-              
+                .thumbnail(0.1f)
                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                .into(holder.cardImage);
 

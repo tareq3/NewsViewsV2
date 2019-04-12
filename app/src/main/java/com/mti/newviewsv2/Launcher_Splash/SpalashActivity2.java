@@ -10,13 +10,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.support.constraint.ConstraintLayout;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.animation.AnimationUtils;
 
 import com.mti.newviewsv2.HomeActivity;
-import com.mti.newviewsv2.Launcher_Splash.IntoActivity.IntroActivity;
 import com.mti.newviewsv2.R;
 
 public class SpalashActivity2 extends AppCompatActivity {
