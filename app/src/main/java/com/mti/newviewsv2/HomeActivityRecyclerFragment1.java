@@ -174,6 +174,12 @@ public class HomeActivityRecyclerFragment1 extends Fragment implements ListItemA
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableSubscriber<Tech>() {
                     @Override
+                    protected void onStart() {
+                        super.onStart();
+                        techArticleList.clear();
+                    }
+
+                    @Override
                     public void onNext(Tech tech) {
 
                         techArticleList.addAll(tech.getArticles());
@@ -196,10 +202,8 @@ public class HomeActivityRecyclerFragment1 extends Fragment implements ListItemA
 
     private void fillAdapter() {
         if (!gridSwitch) {
-            listItemAdapter.updateAdapter((ArrayList<Article>) techArticleList);
             listItemAdapter.notifyDataSetChanged();
         } else {
-            mListItemAdapterTechSmall.updateAdapter((ArrayList<Article>) techArticleList);
             mListItemAdapterTechSmall.notifyDataSetChanged();
         }
     }

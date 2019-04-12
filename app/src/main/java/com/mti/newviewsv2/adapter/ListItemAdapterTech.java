@@ -9,6 +9,8 @@ package com.mti.newviewsv2.adapter;
 import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -114,6 +116,7 @@ public class ListItemAdapterTech extends RecyclerView.Adapter<ListItemAdapterTec
                 .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                 .into(holder.image_row);
 */
+       Log.d("tareq_test" , ""+( (List<Article>) dataList).get(position).getUrlToImage());
        Glide.with(holder.cardImage.getContext())
                .load( ( (List<Article>) dataList).get(position).getUrlToImage())
                 .thumbnail(0.1f)
