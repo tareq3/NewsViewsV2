@@ -21,43 +21,45 @@ import com.mti.newviewsv2.model.TheNextWeb;
 
 import javax.annotation.Generated;
 
+import io.reactivex.Observable;
+import io.reactivex.Single;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
 public interface ApiServices {
        @GET("/v2/top-headlines")
-    Call<Tech> getTechArticles(@Query("sources") String sources, @Query("apiKey") String apiKey);
+       Single<Tech> getTechArticles(@Query("sources") String sources, @Query("apiKey") String apiKey);
 
     @GET("/v2/top-headlines")
-    Call<TechRadar> getTechRadarArticles(@Query("sources") String sources, @Query("apiKey") String apiKey);
+    Single<Tech> getTechRadarArticles(@Query("sources") String sources, @Query("apiKey") String apiKey);
 
        @GET("/v2/top-headlines")
-    Call<TheNextWeb> getTechWebArticles(@Query("sources") String sources, @Query("apiKey") String apiKey);
+       Single<Tech> getTechWebArticles(@Query("sources") String sources, @Query("apiKey") String apiKey);
 
     @GET("/v2/top-headlines")
-    Call<HackerNews> getTechHackerArticles(@Query("sources") String sources, @Query("apiKey") String apiKey);
-
-
-    @GET("/v2/top-headlines")
-    Call<TechCrypto> getTechCryptoArticles(@Query("sources") String sources, @Query("apiKey") String apiKey);
-
+    Single<Tech> getTechHackerArticles(@Query("sources") String sources, @Query("apiKey") String apiKey);
 
 
     @GET("/v2/top-headlines")
-    Call<Business> getBusinessArticles(@Query("country") String country, @Query("category") String category, @Query("apiKey") String apiKey);
+    Single<Tech> getTechCryptoArticles(@Query("sources") String sources, @Query("apiKey") String apiKey);
+
+
 
     @GET("/v2/top-headlines")
-    Call<BusinessInsider> getBusinessInsiderArticles( @Query("sources") String sources, @Query("apiKey") String apiKey);
+    Single<Business> getBusinessArticles(@Query("country") String country, @Query("category") String category, @Query("apiKey") String apiKey);
 
     @GET("/v2/top-headlines")
-    Call<Cnbc> getCNBCArticles( @Query("sources") String sources, @Query("apiKey") String apiKey);
+    Single<Business> getBusinessInsiderArticles( @Query("sources") String sources, @Query("apiKey") String apiKey);
 
     @GET("/v2/top-headlines")
-    Call<FinancialTimes> getFinancialTimesArticles(@Query("sources") String sources, @Query("apiKey") String apiKey);
+    Single<Business> getCNBCArticles( @Query("sources") String sources, @Query("apiKey") String apiKey);
 
     @GET("/v2/top-headlines")
-    Call<Fortune> getFortuneArticles( @Query("sources") String sources, @Query("apiKey") String apiKey);
+    Single<Business> getFinancialTimesArticles(@Query("sources") String sources, @Query("apiKey") String apiKey);
+
+    @GET("/v2/top-headlines")
+    Single<Business> getFortuneArticles( @Query("sources") String sources, @Query("apiKey") String apiKey);
 
 
     //region Hints for retrofit calls

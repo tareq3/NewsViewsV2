@@ -9,6 +9,7 @@ package com.mti.newviewsv2;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
@@ -18,37 +19,53 @@ import androidx.core.util.Pair;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import io.reactivex.FlowableSubscriber;
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subscribers.DisposableSubscriber;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.mti.newviewsv2.adapter.ListItemAdapterTech;
 import com.mti.newviewsv2.adapter.ListItemAdapterTechSmall;
-import com.mti.newviewsv2.controller.ApiController;
+import com.mti.newviewsv2.api.ApiClient;
+import com.mti.newviewsv2.api.ApiServices;
 import com.mti.newviewsv2.model.Article;
+import com.mti.newviewsv2.model.Tech;
+
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /***
  * Created by mtita on 15,February,2019.
  */
-public class HomeActivityRecyclerFragment1 extends Fragment implements ApiController.OnTechDataLoadCompleteListener, ListItemAdapterTech.ItemClickListener, ListItemAdapterTechSmall.ItemClickListener {
+public class HomeActivityRecyclerFragment1 extends Fragment implements ListItemAdapterTech.ItemClickListener, ListItemAdapterTechSmall.ItemClickListener {
 
-    boolean gridSwitch=false;
-    ToggleButton mToggleGridButton;
+    private boolean gridSwitch = false;
+    private ToggleButton mToggleGridButton;
 
-    RecyclerView mRecyclerView;
+    private RecyclerView mRecyclerView;
 
 
-    ListItemAdapterTech listItemAdapter;
-    ListItemAdapterTechSmall mListItemAdapterTechSmall;
+    private ListItemAdapterTech listItemAdapter;
+    private ListItemAdapterTechSmall mListItemAdapterTechSmall;
 
-    List<Article> techArticleList = new ArrayList<>();
+    private List<Article> techArticleList = new ArrayList<>();
 
-    Context mContext;
+    private Context mContext;
+    private final String apikey = "d63701459ed548309d0fe43690011884";
+    private ApiServices apiServices;
 
 
     private OnDataSetChangedListener mOnDataSetChangedListener;
@@ -57,14 +74,14 @@ public class HomeActivityRecyclerFragment1 extends Fragment implements ApiContro
     }
 
     public static HomeActivityRecyclerFragment1 newInstance() {
-        HomeActivityRecyclerFragment1 fragment = new HomeActivityRecyclerFragment1();
 
-        return fragment;
+        return new HomeActivityRecyclerFragment1();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        apiServices = ApiClient.getClient().create(ApiServices.class);
 
     }
 
@@ -98,12 +115,11 @@ public class HomeActivityRecyclerFragment1 extends Fragment implements ApiContro
         mRecyclerView = getView().findViewById(R.id.first_recyclerview);
 
 
-
         mRecyclerView.setHasFixedSize(true);
         final RecyclerView.LayoutManager mLayoutManagerLinear = new LinearLayoutManager(getView().getContext(), LinearLayoutManager.HORIZONTAL, false);
 
         final RecyclerView.LayoutManager mLayoutManagerGrid = new GridLayoutManager(getView().getContext(), 2, GridLayoutManager.HORIZONTAL, false);
-        mRecyclerView.setLayoutManager(gridSwitch? mLayoutManagerGrid : mLayoutManagerLinear);
+        mRecyclerView.setLayoutManager(gridSwitch ? mLayoutManagerGrid : mLayoutManagerLinear);
 
         /*for fixing scroll issue*/
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -111,9 +127,10 @@ public class HomeActivityRecyclerFragment1 extends Fragment implements ApiContro
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
 
-                if(newState!=0){
-                    if(!HomeActivity.mSwipeRefreshLayout.isRefreshing())  HomeActivity.mSwipeRefreshLayout.setEnabled(false);
-                }else{
+                if (newState != 0) {
+                    if (!HomeActivity.mSwipeRefreshLayout.isRefreshing())
+                        HomeActivity.mSwipeRefreshLayout.setEnabled(false);
+                } else {
                     HomeActivity.mSwipeRefreshLayout.setEnabled(true);
                 }
             }
@@ -121,41 +138,71 @@ public class HomeActivityRecyclerFragment1 extends Fragment implements ApiContro
 
 
         listItemAdapter = new ListItemAdapterTech(mContext, techArticleList, this); //if we don't need to use listener can use null instead of this
-        mListItemAdapterTechSmall= new ListItemAdapterTechSmall(mContext, techArticleList, this);
+        mListItemAdapterTechSmall = new ListItemAdapterTechSmall(mContext, techArticleList, this);
 
         /*For toogle button*/
-        mToggleGridButton=getView().findViewById(R.id.toggleButton);
+        mToggleGridButton = getView().findViewById(R.id.toggleButton);
         mToggleGridButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                gridSwitch=!gridSwitch;
+                gridSwitch = !gridSwitch;
                 /*First change the layout*/
-                mRecyclerView.setLayoutManager(gridSwitch? mLayoutManagerGrid : mLayoutManagerLinear);
+                mRecyclerView.setLayoutManager(gridSwitch ? mLayoutManagerGrid : mLayoutManagerLinear);
                 /*As we change the card we need to update the adapter*/
-                mRecyclerView.setAdapter(gridSwitch? mListItemAdapterTechSmall : listItemAdapter);
+                mRecyclerView.setAdapter(gridSwitch ? mListItemAdapterTechSmall : listItemAdapter);
 
-                 fillAdapter(); /*Update adpater and notify changes*/
+                fillAdapter(); /*Update adpater and notify changes*/
             }
         });
-        mRecyclerView.setAdapter(gridSwitch? mListItemAdapterTechSmall : listItemAdapter);
+        mRecyclerView.setAdapter(gridSwitch ? mListItemAdapterTechSmall : listItemAdapter);
 
-        loadData();
+        loadTechData();
     }
 
-    public void loadData(){
+    private Disposable mDisposable;
 
-       ApiController.refresh();
+    void loadTechData() {
+        mDisposable = Single.merge(
+                Arrays.asList(
+                apiServices.getTechArticles("techcrunch", apikey),
+                apiServices.getTechRadarArticles("techradar", apikey),
+                apiServices.getTechWebArticles("the-next-web", apikey),
+                apiServices.getTechHackerArticles("hacker-news", apikey),
+                apiServices.getTechCryptoArticles("crypto-coins-news", apikey)
+        ))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSubscriber<Tech>() {
+                    @Override
+                    public void onNext(Tech tech) {
 
-        new ApiController(this).loadTechData();
-        new ApiController(this).loadTechRadarData();
-        new ApiController(this).loadTechWebData();
-        new ApiController(this).loadTechHackerData();
-        new ApiController(this).loadTechCryptoData();
+                        techArticleList.addAll(tech.getArticles());
+                        fillAdapter();
+                    }
 
+                    @Override
+                    public void onError(Throwable t) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        if (mOnDataSetChangedListener != null)
+                            mOnDataSetChangedListener.onDataUpdate(true);
+                    }
+                })
+        ;
     }
 
-
-
+    private void fillAdapter() {
+        if (!gridSwitch) {
+            listItemAdapter.updateAdapter((ArrayList<Article>) techArticleList);
+            listItemAdapter.notifyDataSetChanged();
+        } else {
+            mListItemAdapterTechSmall.updateAdapter((ArrayList<Article>) techArticleList);
+            mListItemAdapterTechSmall.notifyDataSetChanged();
+        }
+    }
 
     @Override
     public void onDetach() {
@@ -163,46 +210,23 @@ public class HomeActivityRecyclerFragment1 extends Fragment implements ApiContro
         mOnDataSetChangedListener = null;
     }
 
-    private void fillAdapter(){
-        if(!gridSwitch) {
-            listItemAdapter.updateAdapter((ArrayList<Article>) techArticleList);
-            listItemAdapter.notifyDataSetChanged();
-        }else {
-            mListItemAdapterTechSmall.updateAdapter((ArrayList<Article>) techArticleList);
-            mListItemAdapterTechSmall.notifyDataSetChanged();
-        }
-    }
-
-    @Override
-    public void onTechDataLoadCompleted(List<Article> techArticleList) {
-
-    //    Toast.makeText(getContext(), "LAAL "+techArticleList.size(), Toast.LENGTH_SHORT).show();
-
-        this.techArticleList=techArticleList;
-        fillAdapter();
-
-     if(mOnDataSetChangedListener!=null)   mOnDataSetChangedListener.onDataUpdate(true);
-        //Notify Data updated on Activity
-       // mOnDataSetChangedListener.onDataUpdate(true);
-    }
-
     @Override
     public void onClick(View view, int position, boolean isLongClick) {
-     //   Toast.makeText(mContext, ""+ techArticleList.get(position).getUrlToImage(), Toast.LENGTH_SHORT).show();
+        //   Toast.makeText(mContext, ""+ techArticleList.get(position).getUrlToImage(), Toast.LENGTH_SHORT).show();
 
         // Construct an Intent as normal
         Intent intent = new Intent(mContext, DetailActivity.class);
         intent.putExtra("IMAGE_URL", techArticleList.get(position).getUrlToImage());
-        intent.putExtra("TITLE",techArticleList.get(position).getTitle());
-        intent.putExtra("DETAIL",techArticleList.get(position).getContent());
-        intent.putExtra("AUTHOR",techArticleList.get(position).getAuthor());
-        intent.putExtra("SRC",techArticleList.get(position).getSource().getName());
-        intent.putExtra("DATE",techArticleList.get(position).getPublishedAt());
-        intent.putExtra("URL",techArticleList.get(position).getUrl());
+        intent.putExtra("TITLE", techArticleList.get(position).getTitle());
+        intent.putExtra("DETAIL", techArticleList.get(position).getContent());
+        intent.putExtra("AUTHOR", techArticleList.get(position).getAuthor());
+        intent.putExtra("SRC", techArticleList.get(position).getSource().getName());
+        intent.putExtra("DATE", techArticleList.get(position).getPublishedAt());
+        intent.putExtra("URL", techArticleList.get(position).getUrl());
 
         // BEGIN_INCLUDE(start_activity)
 
-        ActivityOptionsCompat activityOptions =  ActivityOptionsCompat.makeSceneTransitionAnimation(
+        ActivityOptionsCompat activityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(
                 getActivity(),
 
                 // Now we provide a list of Pair items which contain the view we can transitioning
@@ -219,15 +243,17 @@ public class HomeActivityRecyclerFragment1 extends Fragment implements ApiContro
     }
 
 
-    /**
-     * This interface must be implemented by activities that contain this fragment to allow an
-     * interaction in this fragment to be communicated to the activity and potentially other
-     * fragments contained in that activity.
-     * <p>
-     * See the Android Training lesson <a href= "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mDisposable != null && !mDisposable.isDisposed())
+            mDisposable.dispose();
+    }
+
+
+
+    /*******************INTERFACE*****************************/
     public interface OnDataSetChangedListener {
         void onDataUpdate(boolean completed);
     }

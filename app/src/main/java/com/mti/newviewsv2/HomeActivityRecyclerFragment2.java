@@ -24,6 +24,11 @@ import androidx.core.util.Pair;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subscribers.DisposableSubscriber;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,27 +37,31 @@ import android.widget.ToggleButton;
 
 import com.mti.newviewsv2.adapter.ListItemAdapterTech;
 import com.mti.newviewsv2.adapter.ListItemAdapterTechSmall;
-import com.mti.newviewsv2.controller.ApiController;
+import com.mti.newviewsv2.api.ApiClient;
+import com.mti.newviewsv2.api.ApiServices;
 import com.mti.newviewsv2.model.Article;
+import com.mti.newviewsv2.model.Business;
+import com.mti.newviewsv2.model.Tech;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /***
  * Created by mtita on 15,February,2019.
  */
-public class HomeActivityRecyclerFragment2 extends Fragment implements ApiController.OnBusinessDataLoadCompleteListener, ListItemAdapterTech.ItemClickListener, ListItemAdapterTechSmall.ItemClickListener {
-    boolean gridSwitch=false;
-    ToggleButton mToggleGridButton;
+public class HomeActivityRecyclerFragment2 extends Fragment implements  ListItemAdapterTech.ItemClickListener, ListItemAdapterTechSmall.ItemClickListener {
+    private boolean gridSwitch=false;
+    private ToggleButton mToggleGridButton;
 
-    RecyclerView mRecyclerView;
+    private RecyclerView mRecyclerView;
 
 
-    ListItemAdapterTech listItemAdapter;
-    ListItemAdapterTechSmall mListItemAdapterTechSmall;
+    private ListItemAdapterTech listItemAdapter;
+    private ListItemAdapterTechSmall mListItemAdapterTechSmall;
 
-    List<Article> businessArticleList = new ArrayList<>();
-    Context mContext;
+    private List<Article> businessArticleList = new ArrayList<>();
+    private Context mContext;
 
 
     private OnDataSetChangedListener mOnDataSetChangedListener;
@@ -61,14 +70,14 @@ public class HomeActivityRecyclerFragment2 extends Fragment implements ApiContro
     }
 
     public static HomeActivityRecyclerFragment2 newInstance() {
-        HomeActivityRecyclerFragment2 fragment = new HomeActivityRecyclerFragment2();
 
-        return fragment;
+        return new HomeActivityRecyclerFragment2();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        apiServices = ApiClient.getClient().create(ApiServices.class);
 
     }
 
@@ -143,25 +152,44 @@ public class HomeActivityRecyclerFragment2 extends Fragment implements ApiContro
         mRecyclerView.setAdapter(gridSwitch? mListItemAdapterTechSmall : listItemAdapter);
 
 
-        loadData();
+     loadBusinessData();
     }
-    public void loadData(){
-        ApiController.refresh();
+    private final String apikey="d63701459ed548309d0fe43690011884";
+    private ApiServices apiServices;
 
-        new ApiController(this).loadBusinessData();
-        new ApiController(this).loadBusinessInsiderData();
-        new ApiController(this).loadCNBCData();
-        new ApiController(this).loadFinanceData();
-        new ApiController(this).loadFortuneData();
+
+    private Disposable mDisposable;
+    void loadBusinessData(){
+      mDisposable=  Single.merge(Arrays.asList(
+                apiServices.getBusinessArticles("us", "business",apikey),
+                apiServices.getBusinessInsiderArticles("business-insider",apikey),
+                apiServices.getFinancialTimesArticles( "financial-times",apikey),
+                apiServices.getFortuneArticles( "fortune",apikey),
+                apiServices.getCNBCArticles( "cnbc",apikey)
+        ))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSubscriber<Business>() {
+                    @Override
+                    public void onNext(Business business) {
+                        businessArticleList.addAll(business.getArticles());
+                        fillAdapter();
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        mOnDataSetChangedListener.onDataUpdate2(true);
+                    }
+                })
+      ;
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mOnDataSetChangedListener = null;
-    }
-
-    void fillAdapter(){
+    private void fillAdapter(){
         if(!gridSwitch) {
             listItemAdapter.updateAdapter((ArrayList<Article>) businessArticleList);
             listItemAdapter.notifyDataSetChanged();
@@ -172,15 +200,12 @@ public class HomeActivityRecyclerFragment2 extends Fragment implements ApiContro
     }
 
     @Override
-    public void onBusinessDataLoadCompleted(List<Article> businessArticleList) {
-
-       // Toast.makeText(mContext, "business"+businessArticleList.size(), Toast.LENGTH_SHORT).show();
-
-        this.businessArticleList=businessArticleList;
-       fillAdapter();
-
-        mOnDataSetChangedListener.onDataUpdate2(true);
+    public void onDetach() {
+        super.onDetach();
+        mOnDataSetChangedListener = null;
     }
+
+
 
     @Override
     public void onClick(View view, int position, boolean isLongClick) {
@@ -215,15 +240,16 @@ public class HomeActivityRecyclerFragment2 extends Fragment implements ApiContro
     }
 
 
-    /**
-     * This interface must be implemented by activities that contain this fragment to allow an
-     * interaction in this fragment to be communicated to the activity and potentially other
-     * fragments contained in that activity.
-     * <p>
-     * See the Android Training lesson <a href= "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(mDisposable!=null && !mDisposable.isDisposed())
+            mDisposable.dispose();
+    }
+
+
+/*******************INTERFACE*****************************/
     public interface OnDataSetChangedListener {
         void onDataUpdate2(boolean completed);
     }

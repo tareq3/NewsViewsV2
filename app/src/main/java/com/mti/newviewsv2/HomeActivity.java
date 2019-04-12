@@ -404,8 +404,8 @@ FlowingDrawer mDrawer;
         load1=false;
         load2=false;
 
-        fragmentInstance.loadData();
-        fragmentInstance2.loadData();
+        fragmentInstance.loadTechData();
+        fragmentInstance2.loadBusinessData();
 
         if (ConnectivityHelper.isConnectedToNetwork(this)) {
             //Show the connected screen

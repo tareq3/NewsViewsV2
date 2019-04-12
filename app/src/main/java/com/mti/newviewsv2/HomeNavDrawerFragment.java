@@ -145,6 +145,7 @@ public class HomeNavDrawerFragment extends Fragment implements NavigationView.On
 
 
 
+    /*******************INTERFACE*****************************/
     public interface OnNavDrawerItemClickListener{
         public void onNavItemClick(MenuItem menuItem);
     }
